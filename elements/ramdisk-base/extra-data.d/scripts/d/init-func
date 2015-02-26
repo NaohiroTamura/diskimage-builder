@@ -19,18 +19,19 @@ function configure_vmedia_dir() {
     VMEDIA_CONFIG_FILE="parameters.txt"
 
     SYSFS_DEVICE_MODELS="/sys/class/block/*/device/model"
-    SYSFS_VMEDIA_DEVICE_MODEL="virtual media"
+    # source SYSFS_VMEDIA_DEVICE_MODEL and WAIT_TIME_FOR_VFLOPPY_MOUNT
+    . /etc/virtual-media-settings.sh
 
     # Wait for some seconds for kernel to finish initializing the
     # virtual media devices.
-    wait_for 5 1 "grep -q -i \"$SYSFS_VMEDIA_DEVICE_MODEL\" $SYSFS_DEVICE_MODELS"
+    wait_for $WAIT_TIME_FOR_VFLOPPY_MOUNT 1 "egrep -q -i \"$SYSFS_VMEDIA_DEVICE_MODEL\" $SYSFS_DEVICE_MODELS"
     if [[ $? != 0 ]]; then
         echo "Error finding the virtual floppy device on the node."
         troubleshoot
     fi
 
     # Find the virtual media device from the kernel sysfs file system.
-    VMEDIA_DEVICE=$(grep -l -i "$SYSFS_VMEDIA_DEVICE_MODEL" $SYSFS_DEVICE_MODELS | awk -F'/' '{print $5}')
+    VMEDIA_DEVICE=$(egrep -l -i "$SYSFS_VMEDIA_DEVICE_MODEL" $SYSFS_DEVICE_MODELS | awk -F'/' '{print $5}')
     if [[ -z $VMEDIA_DEVICE ]]; then
         echo "Error finding the virtual floppy device on the node."
         troubleshoot
