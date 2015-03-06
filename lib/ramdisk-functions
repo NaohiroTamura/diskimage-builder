@@ -69,6 +69,12 @@ udev_rules="/lib/udev/rules.d"
 udev_log="no"
 EOF
 
+  cat >"$TMP_MOUNT_PATH/etc/virtual-media-settings.sh" <<EOF
+
+SYSFS_VMEDIA_DEVICE_MODEL="${DIB_SYSFS_VMEDIA_DEVICE_MODEL:-(virtualmedia|Virtual Floppy0)}"
+WAIT_TIME_FOR_VFLOPPY_MOUNT="${DIB_WAIT_TIME_FOR_VFLOPPY_MOUNT:-15}"
+EOF
+
   generate_hooks
   TARGET_ROOT=$TMP_MOUNT_PATH run_d root
 }

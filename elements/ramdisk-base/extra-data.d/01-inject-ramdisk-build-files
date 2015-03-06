@@ -15,7 +15,3 @@ done
 
 cp -r $(dirname $0)/scripts $RAMDISK_BUILD_PATH
 
-# environment variable SYSFS_VMEDIA_DEVICE_MODEL_CONTENTS is used to specify the contents of SYSFS_VMEDIA_DEVICE_MODEL
-sed -i "s/__SYSFS_VMEDIA_DEVICE_MODEL_CONTENTS__/${SYSFS_VMEDIA_DEVICE_MODEL_CONTENTS:-\"(virtualmedia|Virtual Floppy0)\"}/" $RAMDISK_BUILD_PATH/scripts/d/init-func
-# environment variable WAIT_TIME_FOR_VFLOPPY_MOUNT is used to specify the waiting time (seconds) of mounting virtual floppy
-sed -i "s/__WAIT_TIME_FOR_VFLOPPY_MOUNT__/${WAIT_TIME_FOR_VFLOPPY_MOUNT:-15}/" $RAMDISK_BUILD_PATH/scripts/d/init-func
